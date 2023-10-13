@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>timestamper</id>
+    <version>0.0.1</version>
+    <owners>corbob</owners>
+    <title>TimeStamper</title>
+    <authors>corbob</authors>
+    <projectUrl>https://github.com/corbob/timestamper</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/corbob/timestamper/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>timestamper</tags>
+    <summary>Add timestamps to CLI tools.</summary>
+    <description>TimeStamper wraps around any CLI tool you might use, and it stamps both standard output and standard error with the current time down to the second.</description>
+    <releaseNotes>0.0.1 - Initial Release</releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

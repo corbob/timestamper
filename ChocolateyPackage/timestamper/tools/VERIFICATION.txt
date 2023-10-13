@@ -1,0 +1,18 @@
+﻿TimeStamper comes from corbob.
+
+To verify the binaries:
+
+* Ensure you have Git and Visual Studio 2022 installed.
+* Run `git clone https://github.com/corbob/timestamper.git`
+* Switch to the tag of the released version. For instance:
+    `git checkout 0.0.1`
+* Open the Solution in Visual Studio.
+* Set the Configuration to Release.
+* Run Build > Build Solution
+* In PowerShell run `Get-FileHash <PATH_TO_TIMESTAMPER>/TimeStamper/bin/Release/net7.0/TimeStamper.* -Algorithm SHA256`
+* Verify the checksums of the dll and exe match:
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          6D7F6D3D34CEE461CD040E0C69D86B6B3B744390D5FD81349BE1441864F2535D       C:\git\timestamper\TimeStamper\bin\Release\net7.0\TimeStamper.dll
+SHA256          5A9DD495EB5F21C24C68CE1788D9A43712015153C945711F27E76B4113A6E11F       C:\git\timestamper\TimeStamper\bin\Release\net7.0\TimeStamper.exe
