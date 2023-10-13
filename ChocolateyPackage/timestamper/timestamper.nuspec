@@ -14,6 +14,9 @@
     <summary>Add timestamps to CLI tools.</summary>
     <description>TimeStamper wraps around any CLI tool you might use, and it stamps both standard output and standard error with the current time down to the second.</description>
     <releaseNotes>0.0.1 - Initial Release</releaseNotes>
+    <dependencies>
+      <dependency id="dotnet-runtime" version="[7.0.0, 7.999.999)" />
+    </dependencies>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
