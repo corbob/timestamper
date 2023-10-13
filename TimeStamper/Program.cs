@@ -1,10 +1,21 @@
 ﻿using System.Diagnostics;
 
 int exitCode = -1;
-var executable = Process.GetCurrentProcess().MainModule.FileName;
-var reader = new StreamReader($"{executable}.config");
-var process = reader.ReadLine();
-var psi = new ProcessStartInfo(process!, string.Join(" ", args))
+var arguments = args.ToList<string>();
+if (arguments.Count == 0)
+{
+    throw new ArgumentNullException(nameof(arguments));
+}
+
+var process = arguments.FirstOrDefault();
+arguments.RemoveAt(0);
+
+if (!System.IO.File.Exists(process))
+{
+    throw new FileNotFoundException("We can't launch a program that doesn't exist.", process);
+}
+
+var psi = new ProcessStartInfo(process, string.Join(" ", arguments))
 {
     UseShellExecute = false,
     RedirectStandardOutput = true,
