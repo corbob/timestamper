@@ -46,10 +46,10 @@ p.ErrorDataReceived += (s, e) =>
     }
 
     var curForeground = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.Write($"[{DateTime.Now}] ");
-    Console.ForegroundColor = curForeground;
-    Console.WriteLine(e.Data);
+    Console.Error.ForegroundColor = ConsoleColor.Red;
+    Console.Error.Write($"[{DateTime.Now}] ");
+    Console.Error.ForegroundColor = curForeground;
+    Console.Error.WriteLine(e.Data);
 };
 
 p.EnableRaisingEvents = true;
