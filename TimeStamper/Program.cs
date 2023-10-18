@@ -46,9 +46,9 @@ p.ErrorDataReceived += (s, e) =>
     }
 
     var curForeground = Console.ForegroundColor;
-    Console.Error.ForegroundColor = ConsoleColor.Red;
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.Error.Write($"[{DateTime.Now}] ");
-    Console.Error.ForegroundColor = curForeground;
+    Console.ForegroundColor = curForeground;
     Console.Error.WriteLine(e.Data);
 };
 
