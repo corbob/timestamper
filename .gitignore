@@ -328,8 +328,10 @@ __pycache__/
 *.pyc
 
 # Cake - Uncomment if you are using it
-# tools/**
-# !tools/packages.config
+tools/**
+!tools/packages.config
+code_drop/
+SolutionVersion.cs
 
 # Tabs Studio
 *.tss
