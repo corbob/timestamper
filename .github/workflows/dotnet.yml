@@ -5,6 +5,8 @@ name: .NET
 
 on:
   push:
+  release:
+    types: [created]
   pull_request:
 
 jobs:
