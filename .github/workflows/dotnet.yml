@@ -5,9 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -20,13 +18,5 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
-    - name: Publish
-      run: dotnet publish ./TimeStamper/TimeStamper.csproj -c Release -o ChocolateyPackage/timestamper/Tools
-    - name: Chocolatey Pack
-      run: choco pack ./ChocolateyPackage/timestamper/timestamper.nuspec
-    # - name: Chocolatey Push
-    #   run: choco push timestamper.0.0.1.nupkg --source https://push.chocolatey.org/ --key ${{ secrets.PUSH_REPO_KEY }}
+      run: ./build.ps1
