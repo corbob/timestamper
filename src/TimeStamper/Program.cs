@@ -1,7 +1,15 @@
 ﻿using System.Diagnostics;
 
 int exitCode = -1;
-var arguments = args.ToList<string>();
+var arguments = args.Select(a =>
+{
+    if (a != null && a.IndexOf(' ') != -1)
+    {
+        return $"\"{a}\"";
+    }
+    return a;
+}).ToList<string>();
+
 if (arguments.Count == 0)
 {
     throw new ArgumentNullException(nameof(arguments));
