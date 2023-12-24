@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using TimeStamper;
 
+var stopwatch = Stopwatch.StartNew();
 int exitCode = -1;
 var arguments = args.Select(a =>
 {
@@ -40,11 +42,7 @@ p.OutputDataReceived += (s, e) =>
         return;
     }
     
-    var curForeground = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.Write($"[{DateTime.Now}] ");
-    Console.ForegroundColor = curForeground;
-    Console.WriteLine(e.Data);
+    Console.Out.PrintLine(e.Data);
 };
 p.ErrorDataReceived += (s, e) =>
 {
@@ -53,11 +51,7 @@ p.ErrorDataReceived += (s, e) =>
         return;
     }
 
-    var curForeground = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.Error.Write($"[{DateTime.Now}] ");
-    Console.ForegroundColor = curForeground;
-    Console.Error.WriteLine(e.Data);
+    Console.Error.PrintLine(e.Data, ConsoleColor.Red);
 };
 
 p.EnableRaisingEvents = true;
@@ -65,6 +59,8 @@ p.Start();
 p.BeginErrorReadLine();
 p.BeginOutputReadLine();
 p.WaitForExit();
+stopwatch.Stop();
 exitCode = p.ExitCode;
-Console.WriteLine($"Exit code: {exitCode}");
+Console.Out.PrintLine($"Exit Code: {exitCode}");
+Console.Out.PrintLine($"Runtime: {stopwatch.Elapsed}");
 return exitCode;

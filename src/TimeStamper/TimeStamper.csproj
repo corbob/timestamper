@@ -2,10 +2,17 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFrameworks>net6.0,net7.0,net8.0</TargetFrameworks>
+
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>timestamper</ToolCommandName>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <VersionPrefix>0.0.1</VersionPrefix>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Pastel" Version="4.2.0" />
+    </ItemGroup>
 
 </Project>
