@@ -3,22 +3,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>timestamper</id>
-    <version>0.0.1</version>
+    <version>$version$</version>
     <owners>corbob</owners>
     <title>TimeStamper</title>
-    <authors>corbob</authors>
+    <authors>TimeStamper Contributors</authors>
     <projectUrl>https://github.com/corbob/timestamper</projectUrl>
     <licenseUrl>https://raw.githubusercontent.com/corbob/timestamper/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>timestamper</tags>
     <summary>Add timestamps to CLI tools.</summary>
     <description>TimeStamper wraps around any CLI tool you might use, and it stamps both standard output and standard error with the current time down to the second.</description>
-    <releaseNotes>0.0.1 - Initial Release</releaseNotes>
-    <dependencies>
-      <dependency id="dotnet-runtime" version="[7.0.0, 7.999.999)" />
-    </dependencies>
+    <releaseNotes>https://github.com/corbob/timestamper/releases/$version$</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
+    <file src="..\..\_PublishedApps\TimeStamper\net8.0\*" target="tools" />
   </files>
 </package>

@@ -1,18 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net6.0,net7.0,net8.0</TargetFrameworks>
-
-		<PackAsTool>true</PackAsTool>
-		<ToolCommandName>timestamper</ToolCommandName>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <VersionPrefix>0.0.1</VersionPrefix>
+        <TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>TimeStamper</AssemblyName>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<Title>TimeStamper</Title>
+		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
+		<IsPackable>false</IsPackable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Pastel" Version="4.2.0" />
-    </ItemGroup>
 
 </Project>

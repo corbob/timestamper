@@ -60,10 +60,9 @@ Task("Prepare-Chocolatey-Packages")
     foreach (var file in filesToCopy)
     {
         var fileName = file.Segments[file.Segments.Length - 1];
-        var checksumLine = fileName + ": " + CalculateFileHash(file, HashAlgorithm.SHA256).ToHex() + "\r\n";
+        var checksumLine = fileName + ": " + CalculateFileHash(file, HashAlgorithm.SHA256).ToHex();
         Information(checksumLine);
-        CopyFile(file, BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/" + fileName);
-        FileAppendText(verificationFile, checksumLine);
+        FileAppendText(verificationFile, $"{checksumLine}\r\n");
     }
 });
 

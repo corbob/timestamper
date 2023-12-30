@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TimeStamper": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\opscode\\chef-workstation\\bin\\kitchen.bat destroy",
+      "workingDirectory": "c:\\work\\chocolatey-test-kitchen\\"
+    }
+  }
+}

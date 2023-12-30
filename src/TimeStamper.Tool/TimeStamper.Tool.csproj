@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<AssemblyName>TimeStamper</AssemblyName>
+
+		<PackAsTool>true</PackAsTool>
+		<TargetFramework>net8.0</TargetFramework>
+		<ToolCommandName>dotnet-timestamper</ToolCommandName>
+		<PackageId>TimeStamper.Tool</PackageId>
+		
+		<Title>TimeStamper Tool</Title>
+		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
+		<Copyright>Copyright (c) 2023 - Present - TimeStamper Contributors</Copyright>
+		<PackageLicenseExpression>Apache2.0</PackageLicenseExpression>
+		<PackageReleaseNotes>https://github.com/corbob/timestamper/releases</PackageReleaseNotes>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/corbob/timestamper.git</RepositoryUrl>
+	</PropertyGroup>
+	
+    <ItemGroup>
+	    <Compile Include="../TimeStamper/**/*.cs" Exclude="../TimeStamper/obj/**/*.*;../TimeStamper/bin/**/*.*" />
+    </ItemGroup>
+</Project>

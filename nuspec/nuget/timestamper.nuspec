@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+        <id>TimeStamper</id>
+        <title>TimeStamper</title>
+        <version>$version$</version>
+        <authors>TimeStamper Contributors</authors>
+        <owners>corbob</owners>
+        <license type="expression">MIT</license>
+        <projectUrl>https://github.com/corbob/timestamper</projectUrl>
+        <repository type="git" url="https://github.com/corbob/timestamper.git"/>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>TimeStamper wraps around any CLI tool you might use, and it stamps both standard output and standard error with the current time down to the second.</description>
+        <summary>TimeStamper wraps around any CLI tool you might use, and it stamps both standard output and standard error with the current time down to the second.</summary>
+        <copyright>Copyright (c) 2023 - Present - TimeStamper Contributors</copyright>
+        <language>en-us</language>
+        <tags>timestamper</tags>
+    </metadata>
+    <files>
+        <file src="..\TimeStamper\net8.0\*" target="tools" />
+    </files>
+</package>
