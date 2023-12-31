@@ -7,7 +7,7 @@ namespace TimeStamper
     {
         public static void PrintLine(this TextWriter output, string line, ConsoleColor color = ConsoleColor.Green)
         {
-            if (line == null)
+            if (string.IsNullOrEmpty(line))
             {
                 return;
             }
