@@ -61,7 +61,10 @@ try {
     [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192 -bor 48
 }
 catch {
-    Write-Output 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to upgrade to .NET Framework 4.5+ and PowerShell v3'
+    if ($PSVersionTable.PSVersion -lt 6.0)
+    {
+        Write-Output 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to upgrade to .NET Framework 4.5+ and PowerShell v3'
+    }
 }
 
 [Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null

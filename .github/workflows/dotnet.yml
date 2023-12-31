@@ -21,9 +21,9 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
     - name: Build with .Net Framework
-      run: ./actions/build.ps1
+      run: ./actions/build.ps1 --target=CI
     - name: Upload Windows build results
       uses: actions/upload-artifact@v3
       # Always upload build results

@@ -9,7 +9,11 @@ namespace TimeStamper
     {
         public static int Main(string[] args)
         {
-            var stopwatch = Stopwatch.StartNew();
+            if (args.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             int exitCode = -1;
             var arguments = args.Select(
                 a =>
@@ -22,11 +26,6 @@ namespace TimeStamper
                 })
                 .ToList<string>();
 
-            if (arguments.Count == 0)
-            {
-                throw new ArgumentNullException(nameof(arguments));
-            }
-
             var processName = arguments.FirstOrDefault();
             arguments.RemoveAt(0);
 
@@ -35,36 +34,20 @@ namespace TimeStamper
                 throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
             }
 
-            var psi = new ProcessStartInfo(processName, string.Join(" ", arguments))
+            using var process = new Process
             {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true,
-            };
-
-            using var process = new Process();
-            process.StartInfo = psi;
-            process.OutputDataReceived += (s, e) =>
-            {
-                if (e.Data == null)
+                StartInfo = new ProcessStartInfo(processName, string.Join(" ", arguments))
                 {
-                    return;
-                }
-
-                Console.Out.PrintLine(e.Data);
-            };
-            process.ErrorDataReceived += (s, e) =>
-            {
-                if (e.Data == null)
-                {
-                    return;
-                }
-
-                Console.Error.PrintLine(e.Data);
-            };
-
-            process.EnableRaisingEvents = true;
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                },
+                EnableRaisingEvents = true
+        };
+            process.OutputDataReceived += (s, e) => Console.Out.PrintLine(e.Data);
+            process.ErrorDataReceived += (s, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            var stopwatch = Stopwatch.StartNew();
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();

@@ -34,7 +34,7 @@ BuildParameters.SetParameters(
     shouldRunInspectCode: false,
     treatWarningsAsErrors: true,
     testDirectoryPath: "./test",
-    shouldRunDotNetPack: false);
+    shouldRunDotNetPack: true);
 
 BuildParameters.PrintParameters(Context);
 
