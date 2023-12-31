@@ -35,5 +35,5 @@ jobs:
           code_drop\TestResults\NUnit\TestResult.xml
           code_drop\TestCoverage\lcov.info
           code_drop\TestCoverage\OpenCover.xml
-          code_drop\Packages\Chocolatey\*.nupkg
+          code_drop\Packages\**\*.nupkg
           code_drop\MsBuild.log

@@ -57,6 +57,7 @@ Task("Prepare-Chocolatey-Packages")
     var filesToCopy = GetFiles(BuildParameters.Paths.Directories.PublishedApplications + "/TimeStamper/**/*.*");
     var verificationFile = GetFiles(BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/VERIFICATION.txt").FirstOrDefault();
 
+    Information("Chocolatey package file checksums:");
     foreach (var file in filesToCopy)
     {
         var fileName = file.Segments[file.Segments.Length - 1];
