@@ -10,8 +10,11 @@
 		<PackageId>TimeStamper.Tool</PackageId>
 
 		<Title>TimeStamper Tool</Title>
+		<Authors>TimeStamper Contributors</Authors>
 		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
 		<Copyright>Copyright (c) 2023 - Present - TimeStamper Contributors</Copyright>
+		<PackageProjectUrl>https://github.com/corbob/timestamper</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReleaseNotes>https://github.com/corbob/timestamper/releases</PackageReleaseNotes>
 		<RepositoryType>git</RepositoryType>
