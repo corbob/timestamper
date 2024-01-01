@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TimeStamper
 {
-    public class Program
+    public sealed class Program
     {
         public static int Main(string[] args)
         {

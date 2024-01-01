@@ -3,9 +3,7 @@
 #addin nuget:?package=Cake.Git&version=1.0.0
 #addin nuget:?package=Cake.FileHelpers&version=4.0.1
 
-Environment.SetVariableNames(githubTokenVariable: "GITTOOLS_GITHUB_TOKEN");
-
-var standardNotificationMessage = "A new version, {0} of {1} has just been released.  Get it from Chocolatey, NuGet, or as a .Net Global Tool.";
+Environment.SetVariableNames();
 
 BuildParameters.SetParameters(context: Context,
                             buildSystem: BuildSystem,
@@ -31,9 +29,11 @@ Task("Prepare-Chocolatey-Packages")
     .WithCriteria(() => BuildParameters.ShouldRunChocolatey, "Skipping because execution of Chocolatey has been disabled")
     .Does((context) =>
 {
-    Information(context);
     // Copy legal documents
-    CopyFile(BuildParameters.RootDirectoryPath + "/LICENSE", BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/LICENSE.txt");
+    CopyFile($"{BuildParameters.RootDirectoryPath}/LICENSE", $"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/tools/LICENSE.txt");
+
+    // Copy Verification file
+    CopyFile($"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/VERIFICATION.txt", $"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/tools/VERIFICATION.txt");
 
     // Copy built executables
     var filesToCopy = GetFiles(BuildParameters.Paths.Directories.PublishedApplications + "/TimeStamper/**/*.*");
