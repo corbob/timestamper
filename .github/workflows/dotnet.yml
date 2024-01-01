@@ -23,7 +23,7 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Build with .Net Framework
-      run: ./actions/build.ps1 --target=CI
+      run: ./build.CI.ps1
     - name: Upload Windows build results
       uses: actions/upload-artifact@v3
       # Always upload build results
