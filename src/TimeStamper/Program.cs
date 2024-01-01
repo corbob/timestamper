@@ -1,11 +1,13 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace TimeStamper
 {
-    public sealed class Program
+    [PublicAPI]
+    public static class Program
     {
         public static int Main(string[] args)
         {
@@ -14,7 +16,6 @@ namespace TimeStamper
                 throw new ArgumentOutOfRangeException(message: "TimeStamper must be called with the executable path to run.", innerException: null);
             }
 
-            int exitCode;
             var arguments = args.Select(
                 a =>
                 {
@@ -24,7 +25,7 @@ namespace TimeStamper
                     }
                     return a;
                 })
-                .ToList<string>();
+                .ToList();
 
             var processName = arguments.FirstOrDefault();
             arguments.RemoveAt(0);
@@ -45,18 +46,17 @@ namespace TimeStamper
                 },
                 EnableRaisingEvents = true
             };
-            process.OutputDataReceived += (s, e) => Console.Out.PrintLine(e.Data);
-            process.ErrorDataReceived += (s, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            process.OutputDataReceived += (_, e) => Console.Out.PrintLine(e.Data);
+            process.ErrorDataReceived += (_, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
             var stopwatch = Stopwatch.StartNew();
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             process.WaitForExit();
             stopwatch.Stop();
-            exitCode = process.ExitCode;
-            Console.Out.PrintLine($"Exit Code: {exitCode}");
+            Console.Out.PrintLine($"Exit Code: {process.ExitCode}");
             Console.Out.PrintLine($"Runtime: {stopwatch.Elapsed}");
-            return exitCode;
+            return process.ExitCode;
         }
     }
 }
