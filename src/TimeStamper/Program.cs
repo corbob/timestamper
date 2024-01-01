@@ -11,14 +11,14 @@ namespace TimeStamper
         {
             if (args.Length == 0)
             {
-                throw new ArgumentNullException(nameof(args));
+                throw new ArgumentOutOfRangeException(message: "TimeStamper must be called with the executable path to run.", innerException: null);
             }
 
-            int exitCode = -1;
+            int exitCode;
             var arguments = args.Select(
                 a =>
                 {
-                    if(a != null && a.IndexOf(' ') != -1)
+                    if (a != null && a.Contains(' '))
                     {
                         return $"\"{a}\"";
                     }
@@ -44,7 +44,7 @@ namespace TimeStamper
                     CreateNoWindow = true,
                 },
                 EnableRaisingEvents = true
-        };
+            };
             process.OutputDataReceived += (s, e) => Console.Out.PrintLine(e.Data);
             process.ErrorDataReceived += (s, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
             var stopwatch = Stopwatch.StartNew();
