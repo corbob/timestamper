@@ -31,9 +31,9 @@ jobs:
       with:
         name: windows-build-results
         path: |
-          code_drop\TestResults\issues-report.html
-          code_drop\TestResults\NUnit\TestResult.xml
-          code_drop\TestCoverage\lcov.info
-          code_drop\TestCoverage\OpenCover.xml
-          code_drop\Packages\**\*.nupkg
-          code_drop\MsBuild.log
+          BuildArtifacts\TestResults\issues-report.html
+          BuildArtifacts\TestResults\NUnit\TestResult.xml
+          BuildArtifacts\TestCoverage\lcov.info
+          BuildArtifacts\TestCoverage\OpenCover.xml
+          BuildArtifacts\Packages\**\*.nupkg
+          BuildArtifacts\MsBuild.log
