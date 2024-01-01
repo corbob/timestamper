@@ -333,6 +333,8 @@ tools/**
 BuildArtifacts/
 SolutionVersion.cs
 
+nuspec/Chocolatey/tools/*.txt
+
 # Tabs Studio
 *.tss
 
