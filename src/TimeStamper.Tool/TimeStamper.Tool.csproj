@@ -6,7 +6,7 @@
 
 		<PackAsTool>true</PackAsTool>
 		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
-		<ToolCommandName>dotnet-timestamper</ToolCommandName>
+		<ToolCommandName>timestamper</ToolCommandName>
 		<PackageId>TimeStamper.Tool</PackageId>
 
 		<Title>TimeStamper Tool</Title>
