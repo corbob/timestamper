@@ -1,40 +1,19 @@
-#load nuget:?package=Chocolatey.Cake.Recipe&version=0.25.0
-
-
-///////////////////////////////////////////////////////////////////////////////
-// ADDINS
-///////////////////////////////////////////////////////////////////////////////
-
-// (None)
-
-///////////////////////////////////////////////////////////////////////////////
-// RECIPE SETUP
-///////////////////////////////////////////////////////////////////////////////
+#load nuget:?package=Cake.Recipe&version=3.1.1
+#tool dotnet:?package=dotnet-t4&version=2.2.1
+#addin nuget:?package=Cake.Git&version=1.0.0
+#addin nuget:?package=Cake.FileHelpers&version=4.0.1
 
 Environment.SetVariableNames();
 
-
-BuildParameters.SetParameters(
-    context: Context,
-    buildSystem: BuildSystem,
-    sourceDirectoryPath: "./src",
-    solutionFilePath: "./src/TimeStamper.sln",
-    title: "TimeStamper",
-    repositoryOwner: "corbob",
-    repositoryName: "timestamper",
-    productName: "TimeStamper",
-    productDescription: "",
-    productCopyright: string.Format("Copyright © 2023 - {0} Cory Knox.", DateTime.Now.Year),
-    productCompany: "",
-    productTrademark: "",
-    shouldStrongNameOutputAssemblies: false,
-    shouldObfuscateOutputAssemblies: false,
-    shouldAuthenticodeSignOutputAssemblies: false,
-    shouldStrongNameSignDependentAssemblies: false,
-    shouldRunInspectCode: false,
-    treatWarningsAsErrors: true,
-    testDirectoryPath: "./test",
-    shouldRunDotNetPack: false);
+BuildParameters.SetParameters(context: Context,
+                            buildSystem: BuildSystem,
+                            sourceDirectoryPath: "./src",
+                            title: "TimeStamper",
+                            repositoryOwner: "corbob",
+                            repositoryName: "timestamper",
+                            shouldRunDotNetCorePack: true,
+                            shouldRunIntegrationTests: true,
+                            preferredBuildProviderType: BuildProviderType.GitHubActions);
 
 BuildParameters.PrintParameters(Context);
 
@@ -48,27 +27,34 @@ Task("Prepare-Chocolatey-Packages")
     .IsDependeeOf("Create-Chocolatey-Packages")
     .WithCriteria(() => BuildParameters.BuildAgentOperatingSystem == PlatformFamily.Windows, "Skipping because not running on Windows")
     .WithCriteria(() => BuildParameters.ShouldRunChocolatey, "Skipping because execution of Chocolatey has been disabled")
-    .Does(() =>
+    .Does((context) =>
 {
     // Copy legal documents
-    CopyFile(BuildParameters.RootDirectoryPath + "/LICENSE", BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/LICENSE.txt");
+    CopyFile($"{BuildParameters.RootDirectoryPath}/LICENSE", $"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/tools/LICENSE.txt");
+
+    // Copy Verification file
+    CopyFile($"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/VERIFICATION.txt", $"{BuildParameters.Paths.Directories.ChocolateyNuspecDirectory}/tools/VERIFICATION.txt");
 
     // Copy built executables
     var filesToCopy = GetFiles(BuildParameters.Paths.Directories.PublishedApplications + "/TimeStamper/**/*.*");
     var verificationFile = GetFiles(BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/VERIFICATION.txt").FirstOrDefault();
+    Information("Chocolatey package file checksums:");
 
     foreach (var file in filesToCopy)
     {
         var fileName = file.Segments[file.Segments.Length - 1];
-        var checksumLine = fileName + ": " + CalculateFileHash(file, HashAlgorithm.SHA256).ToHex() + "\r\n";
+        var checksumLine = fileName + ": " + CalculateFileHash(file, HashAlgorithm.SHA256).ToHex();
         Information(checksumLine);
-        CopyFile(file, BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + "/tools/" + fileName);
-        FileAppendText(verificationFile, checksumLine);
+        context.FileAppendLines(verificationFile, new [] { checksumLine });
     }
 });
 
-///////////////////////////////////////////////////////////////////////////////
-// RUN IT!
-///////////////////////////////////////////////////////////////////////////////
 
-Build.RunDotNet();
+ToolSettings.SetToolPreprocessorDirectives(gitVersionGlobalTool: "#tool dotnet:?package=GitVersion.Tool&version=5.12.0");
+
+((CakeTask)BuildParameters.Tasks.ExportReleaseNotesTask.Task).ErrorHandler = null;
+((CakeTask)BuildParameters.Tasks.PublishGitHubReleaseTask.Task).ErrorHandler = null;
+BuildParameters.Tasks.PublishPreReleasePackagesTask.IsDependentOn(BuildParameters.Tasks.PublishGitHubReleaseTask);
+BuildParameters.Tasks.PublishReleasePackagesTask.IsDependentOn(BuildParameters.Tasks.PublishGitHubReleaseTask);
+
+Build.RunDotNetCore();

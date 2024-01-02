@@ -1,11 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <VersionPrefix>0.0.1</VersionPrefix>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+		<AssemblyName>TimeStamper</AssemblyName>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<Title>TimeStamper</Title>
+		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
+		<IsPackable>false</IsPackable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+    </ItemGroup>
 
 </Project>
