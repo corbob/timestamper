@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Pastel;
 
 namespace TimeStamper
 {
@@ -12,10 +13,7 @@ namespace TimeStamper
                 return;
             }
 
-            Console.ForegroundColor = color;
-            output.Write($"[{DateTime.Now}] ");
-            Console.ResetColor();
-            output.WriteLine(line);
+            output.WriteLine($"[{DateTime.Now}] ".Pastel(color) + line);
         }
     }
 }
