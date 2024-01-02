@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Pastel;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -55,8 +56,9 @@ namespace TimeStamper
             process.BeginOutputReadLine();
             process.WaitForExit();
             stopwatch.Stop();
-            Console.Out.PrintLine($"Exit Code: {process.ExitCode}");
-            Console.Out.PrintLine($"Runtime: {stopwatch.Elapsed}");
+            Console.WriteLine("=======================".Pastel(ConsoleColor.Blue));
+            Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Pastel(ConsoleColor.Blue));
+            Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Pastel(ConsoleColor.Blue));
             return process.ExitCode;
         }
     }
