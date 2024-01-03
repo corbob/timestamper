@@ -1,62 +1,63 @@
-﻿using System.Diagnostics;
+﻿using JetBrains.Annotations;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
-int exitCode = -1;
-var arguments = args.ToList<string>();
-if (arguments.Count == 0)
+namespace TimeStamper
 {
-    throw new ArgumentNullException(nameof(arguments));
-}
-
-var process = arguments.FirstOrDefault();
-arguments.RemoveAt(0);
-
-if (!System.IO.File.Exists(process))
-{
-    throw new FileNotFoundException("We can't launch a program that doesn't exist.", process);
-}
-
-var psi = new ProcessStartInfo(process, string.Join(" ", arguments))
-{
-    UseShellExecute = false,
-    RedirectStandardOutput = true,
-    RedirectStandardError = true,
-    CreateNoWindow = true,
-};
-
-using var p = new Process();
-p.StartInfo = psi;
-p.OutputDataReceived += (s, e) =>
-{
-    if (string.IsNullOrEmpty(e.Data))
+    [PublicAPI]
+    public static class Program
     {
-        return;
-    }
-    
-    var curForeground = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.Write($"[{DateTime.Now}] ");
-    Console.ForegroundColor = curForeground;
-    Console.WriteLine(e.Data);
-};
-p.ErrorDataReceived += (s, e) =>
-{
-    if (string.IsNullOrEmpty(e.Data))
-    {
-        return;
-    }
+        public static int Main(string[] args)
+        {
+            if (args.Length == 0)
+            {
+                throw new ArgumentOutOfRangeException(message: "TimeStamper must be called with the executable path to run.", innerException: null);
+            }
 
-    var curForeground = Console.ForegroundColor;
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.Error.Write($"[{DateTime.Now}] ");
-    Console.ForegroundColor = curForeground;
-    Console.Error.WriteLine(e.Data);
-};
+            var arguments = args.Select(
+                a =>
+                {
+                    if (a != null && a.Contains(' '))
+                    {
+                        return $"\"{a}\"";
+                    }
+                    return a;
+                })
+                .ToList();
 
-p.EnableRaisingEvents = true;
-p.Start();
-p.BeginErrorReadLine();
-p.BeginOutputReadLine();
-p.WaitForExit();
-exitCode = p.ExitCode;
-Console.WriteLine($"Exit code: {exitCode}");
-return exitCode;
+            // Process Name should not contain quotes
+            var processName = arguments.FirstOrDefault().Trim('\"');
+            arguments.RemoveAt(0);
+
+            if (!File.Exists(processName))
+            {
+                throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
+            }
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(processName, string.Join(" ", arguments))
+                {
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                },
+                EnableRaisingEvents = true
+            };
+            process.OutputDataReceived += (_, e) => Console.Out.PrintLine(e.Data);
+            process.ErrorDataReceived += (_, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            var stopwatch = Stopwatch.StartNew();
+            process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+            process.WaitForExit();
+            stopwatch.Stop();
+            Console.Out.PrintLine($"Exit Code: {process.ExitCode}");
+            Console.Out.PrintLine($"Runtime: {stopwatch.Elapsed}");
+            return process.ExitCode;
+        }
+    }
+}
