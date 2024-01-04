@@ -12,13 +12,28 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
-    - name: Build
-      run: ./build.ps1
+        dotnet-version: 8.0.x
+    - name: Build with .Net Framework
+      run: ./build.CI.ps1
+    - name: Upload Windows build results
+      uses: actions/upload-artifact@v3
+      # Always upload build results
+      if: ${{ always() }}
+      with:
+        name: windows-build-results
+        path: |
+          BuildArtifacts\TestResults\issues-report.html
+          BuildArtifacts\TestResults\NUnit\TestResult.xml
+          BuildArtifacts\TestCoverage\lcov.info
+          BuildArtifacts\TestCoverage\OpenCover.xml
+          BuildArtifacts\Packages\**\*.nupkg
+          BuildArtifacts\MsBuild.log

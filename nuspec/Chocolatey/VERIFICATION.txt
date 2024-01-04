@@ -1,0 +1,8 @@
+﻿TimeStamper comes from corbob. The builds are performed by GitHub Actions, and the resulting nupkg is manually pushed to Chocolatey Community Repository.
+
+To verify the binaries:
+
+* Navigate to the corresponding release page on GitHub.
+* Look for the checksums mentioned in the release notes.
+* In PowerShell run `Get-FileHash <PATH_TO_FILE> -Algorithm SHA256`
+* Verify the checksums match:
