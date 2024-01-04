@@ -7,7 +7,10 @@
     <owners>corbob</owners>
     <title>TimeStamper</title>
     <authors>TimeStamper Contributors</authors>
-    <projectUrl>https://github.com/corbob/timestamper</projectUrl>
+    <projectUrl>https://timestamper.knoxy.ca</projectUrl>
+    <projectSourceUrl>https://github.com/corbob/timestamper</projectSourceUrl>
+    <packageSourceUrl>https://github.com/corbob/timestamper</packageSourceUrl>
+    <docsUrl>https://timestamper.knoxy.ca</docsUrl>
     <licenseUrl>https://raw.githubusercontent.com/corbob/timestamper/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>timestamper</tags>
