@@ -4,8 +4,8 @@
         <OutputType>Exe</OutputType>
         <TargetFrameworks>net8.0</TargetFrameworks>
 		<AssemblyName>TimeStamper</AssemblyName>
-		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>true</SelfContained>
+    <PublishAot>true</PublishAot>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<Title>TimeStamper</Title>
 		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
