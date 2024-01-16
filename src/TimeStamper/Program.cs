@@ -29,7 +29,7 @@ namespace TimeStamper
                 .ToList();
 
             // Process Name should not contain quotes
-            var processName = arguments.FirstOrDefault().Trim('\"');
+            var processName = arguments.FirstOrDefault()?.Trim('\"');
             arguments.RemoveAt(0);
 
             if (!File.Exists(processName))
