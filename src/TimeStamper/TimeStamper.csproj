@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFrameworks>net8.0</TargetFrameworks>
-		<AssemblyName>TimeStamper</AssemblyName>
-		<SelfContained>true</SelfContained>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <AssemblyName>TimeStamper</AssemblyName>
+    <SelfContained>true</SelfContained>
     <PublishAot>true</PublishAot>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<Title>TimeStamper</Title>
-		<Description>Wrap around any CLI tool you might use, and stamp both standard output and standard error with the current time down to the second.</Description>
-		<IsPackable>false</IsPackable>
-    </PropertyGroup>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Title>TimeStamper</Title>
+    <Description>Wrap around any CLI tool you might use, and stamp both standard output and standard
+      error with the current time down to the second.</Description>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
-      <PackageReference Include="pastel" Version="4.2.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
+    <PackageReference Include="pastel" Version="4.2.0" />
+  </ItemGroup>
 
 </Project>
