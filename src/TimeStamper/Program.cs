@@ -48,8 +48,24 @@ namespace TimeStamper
                 },
                 EnableRaisingEvents = true
             };
-            process.OutputDataReceived += (_, e) => Console.Out.PrintLine(e.Data);
-            process.ErrorDataReceived += (_, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (Console.IsOutputRedirected)
+                {
+                    Console.WriteLine(e.Data);
+                    return;
+                }
+                Console.Out.PrintLine(e.Data);
+            };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (Console.IsErrorRedirected)
+                {
+                    Console.Error.WriteLine(e.Data);
+                    return;
+                }
+                Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            };
             var stopwatch = Stopwatch.StartNew();
             process.Start();
             process.BeginErrorReadLine();
