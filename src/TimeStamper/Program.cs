@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using Pastel;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -37,6 +36,8 @@ namespace TimeStamper
                 throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
             }
 
+            var config = new Configuration();
+
             using var process = new Process
             {
                 StartInfo = new ProcessStartInfo(processName, string.Join(" ", arguments))
@@ -55,7 +56,7 @@ namespace TimeStamper
                     Console.WriteLine(e.Data);
                     return;
                 }
-                Console.Out.PrintLine(e.Data);
+                Console.Out.PrintLine(e.Data, config.StandardOutputSequence, config.TimeStampFormat);
             };
             process.ErrorDataReceived += (_, e) =>
             {
@@ -64,7 +65,7 @@ namespace TimeStamper
                     Console.Error.WriteLine(e.Data);
                     return;
                 }
-                Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+                Console.Error.PrintLine(e.Data, config.InformationalSequence, config.TimeStampFormat);
             };
             var stopwatch = Stopwatch.StartNew();
             process.Start();
@@ -72,9 +73,14 @@ namespace TimeStamper
             process.BeginOutputReadLine();
             process.WaitForExit();
             stopwatch.Stop();
-            Console.WriteLine("=======================".Pastel(ConsoleColor.Blue));
-            Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Pastel(ConsoleColor.Blue));
-            Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Pastel(ConsoleColor.Blue));
+            
+            if (!Console.IsOutputRedirected && config.ShouldOutputFooter)
+            {
+                Console.WriteLine("=======================".Colorize(config.InformationalSequence));
+                Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+            }
+
             return process.ExitCode;
         }
     }
