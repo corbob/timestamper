@@ -1,13 +1,10 @@
-﻿using JetBrains.Annotations;
-using Pastel;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace TimeStamper
 {
-    [PublicAPI]
     public static class Program
     {
         public static int Main(string[] args)
@@ -29,13 +26,15 @@ namespace TimeStamper
                 .ToList();
 
             // Process Name should not contain quotes
-            var processName = arguments.FirstOrDefault().Trim('\"');
+            var processName = arguments.FirstOrDefault()?.Trim('\"');
             arguments.RemoveAt(0);
 
             if (!File.Exists(processName))
             {
                 throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
             }
+
+            var config = new Configuration();
 
             using var process = new Process
             {
@@ -48,17 +47,38 @@ namespace TimeStamper
                 },
                 EnableRaisingEvents = true
             };
-            process.OutputDataReceived += (_, e) => Console.Out.PrintLine(e.Data);
-            process.ErrorDataReceived += (_, e) => Console.Error.PrintLine(e.Data, ConsoleColor.Red);
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (Console.IsOutputRedirected)
+                {
+                    Console.WriteLine(e.Data);
+                    return;
+                }
+                Console.Out.PrintLine(e.Data, config.StandardOutputSequence, config.TimeStampFormat);
+            };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (Console.IsErrorRedirected)
+                {
+                    Console.Error.WriteLine(e.Data);
+                    return;
+                }
+                Console.Error.PrintLine(e.Data, config.StandardErrorSequence, config.TimeStampFormat);
+            };
             var stopwatch = Stopwatch.StartNew();
             process.Start();
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             process.WaitForExit();
             stopwatch.Stop();
-            Console.WriteLine("=======================".Pastel(ConsoleColor.Blue));
-            Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Pastel(ConsoleColor.Blue));
-            Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Pastel(ConsoleColor.Blue));
+            
+            if (!Console.IsOutputRedirected && config.ShouldOutputFooter)
+            {
+                Console.Out.PrintLine("=======================".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+            }
+
             return process.ExitCode;
         }
     }
