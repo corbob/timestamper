@@ -34,7 +34,10 @@ namespace TimeStamper
                 throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
             }
 
-            var config = new Configuration();
+            var configDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "timestamper");
+            var config = new Configuration(configDirectory);
 
             using var process = new Process
             {
