@@ -6,6 +6,7 @@ namespace TimeStamper
     public class Configuration
     {
         public bool ShouldOutputFooter;
+        public bool ShouldOutputHeader;
         public string StandardOutputSequence;
         public string StandardErrorSequence;
         public string InformationalSequence;
@@ -24,9 +25,11 @@ namespace TimeStamper
 
         private void LoadConfiguration()
         {
+            // Set the defaults regardless of if the file exists.
+            SetDefaults();
+
             if (!File.Exists(_configFile))
             {
-                SetDefaults();
                 SaveConfiguration();
                 return;
             }
@@ -34,7 +37,9 @@ namespace TimeStamper
             TextReader reader = new StreamReader(_configFile);
             var config = _serializer.Deserialize(reader) as Configuration;
             reader.Close();
+            // Override the defaults
             ShouldOutputFooter = config.ShouldOutputFooter;
+            ShouldOutputFooter = config.ShouldOutputHeader;
             StandardOutputSequence = config.StandardOutputSequence;
             StandardErrorSequence = config.StandardErrorSequence;
             InformationalSequence = config.InformationalSequence;
@@ -44,6 +49,8 @@ namespace TimeStamper
         private void SetDefaults()
         {
             ShouldOutputFooter = true;
+            // Default the header output to false as it could contain sensitive information.
+            ShouldOutputHeader = false;
             StandardOutputSequence = "92";
             StandardErrorSequence = "91";
             InformationalSequence = "96";
