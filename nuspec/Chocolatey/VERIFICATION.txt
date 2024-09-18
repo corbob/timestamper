@@ -2,7 +2,8 @@
 
 To verify the binaries:
 
-* Navigate to the corresponding release page on GitHub.
+* Navigate to the release page on GitHub <https://github.com/corbob/timestamper/releases/>.
+* Locate the release that matches this version.
 * Look for the checksums mentioned in the release notes.
-* In PowerShell run `Get-FileHash <PATH_TO_FILE> -Algorithm SHA256`
+* In PowerShell run `Get-FileHash <PATH_TO_FILE> -Algorithm SHA256`.
 * Verify the checksums match:
