@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace TimeStamper
 {
@@ -9,7 +10,33 @@ namespace TimeStamper
     {
         public static int Main(string[] args)
         {
+            var debugVar = Environment.GetEnvironmentVariable("TimeStamperDebug");
+            var shouldDebug = !string.IsNullOrEmpty(debugVar) && debugVar.Equals("true", StringComparison.OrdinalIgnoreCase);
             var isRedirected = Console.IsOutputRedirected;
+
+            if (shouldDebug)
+            {
+                Console.WriteLine("Waiting up to 2 minutes for debugger to be attached");
+                Console.WriteLine($"Process ID: {Environment.ProcessId}");
+                var sw = Stopwatch.StartNew();
+                while (!Debugger.IsAttached && sw.ElapsedMilliseconds < 120000)
+                {
+                    Thread.Sleep(100);
+                }
+                
+                if (!Debugger.IsAttached)
+                {
+                    Console.WriteLine("Debugger was not attached in time.");
+                }
+                else
+                {
+                    // Break the debugger.
+                    Debugger.Break();
+                }
+
+                sw.Stop();
+            }
+
             if (args.Length == 0)
             {
                 throw new ArgumentOutOfRangeException(message: "TimeStamper must be called with the executable path to run.", innerException: null);
