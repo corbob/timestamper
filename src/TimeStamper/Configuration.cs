@@ -12,7 +12,7 @@ namespace TimeStamper
         public string InformationalSequence;
         public string TimeStampFormat;
         private readonly string _configFile;
-        private readonly XmlSerializer _serializer = new XmlSerializer(typeof(Configuration));
+        private readonly XmlSerializer _serializer = new(typeof(Configuration));
 
         public Configuration(string configDirectory)
         {
@@ -21,6 +21,8 @@ namespace TimeStamper
             LoadConfiguration();
         }
 
+        // The xml serializer required a parameterless constructor.
+        [JetBrains.Annotations.UsedImplicitly]
         public Configuration() { }
 
         private void LoadConfiguration()
@@ -35,11 +37,16 @@ namespace TimeStamper
             }
 
             TextReader reader = new StreamReader(_configFile);
-            var config = _serializer.Deserialize(reader) as Configuration;
+
+            if (_serializer.Deserialize(reader) is not Configuration config)
+            {
+                return;
+            }
+            
             reader.Close();
             // Override the defaults
             ShouldOutputFooter = config.ShouldOutputFooter;
-            ShouldOutputFooter = config.ShouldOutputHeader;
+            ShouldOutputHeader = config.ShouldOutputHeader;
             StandardOutputSequence = config.StandardOutputSequence;
             StandardErrorSequence = config.StandardErrorSequence;
             InformationalSequence = config.InformationalSequence;
@@ -58,7 +65,7 @@ namespace TimeStamper
         }
         private void SaveConfiguration()
         {
-            TextWriter writer = new StreamWriter(_configFile);
+            using TextWriter writer = new StreamWriter(_configFile);
             _serializer.Serialize(writer, this);
             writer.Close();
         }
