@@ -24,4 +24,8 @@
     <ItemGroup>
 	    <Compile Include="../TimeStamper/**/*.cs" Exclude="../TimeStamper/obj/**/*.*;../TimeStamper/bin/**/*.*" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
+    </ItemGroup>
 </Project>
