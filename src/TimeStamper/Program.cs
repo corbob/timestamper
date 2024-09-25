@@ -16,17 +16,17 @@ namespace TimeStamper
 
             if (shouldDebug)
             {
-                Console.WriteLine("Waiting up to 2 minutes for debugger to be attached");
-                Console.WriteLine($"Process ID: {Environment.ProcessId}");
+                Console.WriteLine(Strings.AwaitDebugger);
+                Console.WriteLine($"{Strings.ProcessId} {Environment.ProcessId}");
                 var sw = Stopwatch.StartNew();
-                while (!Debugger.IsAttached && sw.ElapsedMilliseconds < 120000)
+                while (!Debugger.IsAttached && sw.ElapsedMilliseconds < 120_000)
                 {
                     Thread.Sleep(100);
                 }
                 
                 if (!Debugger.IsAttached)
                 {
-                    Console.WriteLine("Debugger was not attached in time.");
+                    Console.WriteLine(Strings.NoDebugger);
                 }
                 else
                 {
@@ -39,7 +39,7 @@ namespace TimeStamper
 
             if (args.Length == 0)
             {
-                throw new ArgumentOutOfRangeException(message: "TimeStamper must be called with the executable path to run.", innerException: null);
+                throw new ArgumentOutOfRangeException(message: Strings.InvalidCall, innerException: null);
             }
 
             var arguments = args.Select(
@@ -60,7 +60,7 @@ namespace TimeStamper
 
             if (!File.Exists(processName))
             {
-                throw new FileNotFoundException("We can't launch a program that doesn't exist.", processName);
+                throw new FileNotFoundException(Strings.ProcessNotFound, processName);
             }
 
             var configDirectory = Path.Combine(
@@ -70,23 +70,22 @@ namespace TimeStamper
 
             if (!isRedirected && config.ShouldOutputHeader)
             {
-                //Console.Out.PrintLine("=======================".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
                 Console.Out
                     .PrintLine(
-                        "Executable Path: " + $"{processName}".Colorize(config.InformationalSequence),
+                        $"{Strings.ProcessPath} {processName.Colorize(config.InformationalSequence)}",
                         config.InformationalSequence,
                         config.TimeStampFormat);
                 Console.Out
                     .PrintLine(
-                        "Parameters: " + string.Join(',',arguments.Select(a => a.Colorize(config.InformationalSequence))),
+                        $"{Strings.Parameters} {string.Join(',',arguments.Select(a => a.Colorize(config.InformationalSequence)))}",
                         config.InformationalSequence,
                         config.TimeStampFormat);
                 Console.Out
                     .PrintLine(
-                        "Parameters as passed to process: " + argumentsToProcess,
+                        $"{Strings.ParametersPassed} {argumentsToProcess}",
                         config.InformationalSequence,
                         config.TimeStampFormat);
-                Console.Out.PrintLine("=======================".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine(Strings.HorizontalRule.Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
             }
 
             using var process = new Process
@@ -127,9 +126,9 @@ namespace TimeStamper
             
             if (!isRedirected && config.ShouldOutputFooter)
             {
-                Console.Out.PrintLine("=======================".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
-                Console.Out.PrintLine("Exit Code: " + $"{process.ExitCode}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
-                Console.Out.PrintLine("Runtime: " + $"{stopwatch.Elapsed}".Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine(Strings.HorizontalRule.Colorize(config.InformationalSequence), config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine($"{Strings.ExitCode} {process.ExitCode.ToString().Colorize(config.InformationalSequence)}", config.InformationalSequence, config.TimeStampFormat);
+                Console.Out.PrintLine($"{Strings.Duration} {stopwatch.Elapsed.ToString().Colorize(config.InformationalSequence)}", config.InformationalSequence, config.TimeStampFormat);
             }
 
             return process.ExitCode;
