@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "TimeStamper": {
-      "commandName": "Project",
-      "commandLineArgs": "c:\\code\\timestamper\\demo.bat reflog -10"
-    }
-  }
-}
