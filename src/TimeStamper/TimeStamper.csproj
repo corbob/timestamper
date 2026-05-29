@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <AssemblyName>TimeStamper</AssemblyName>
     <SelfContained>true</SelfContained>
 	<PublishSingleFile>true</PublishSingleFile>

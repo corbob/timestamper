@@ -20,6 +20,6 @@
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
-    <file src="..\..\BuildArtifacts\temp\_PublishedApplications\TimeStamper\net10.0\*" target="tools" />
+    <file src="..\..\BuildArtifacts\temp\_PublishedApplications\TimeStamper\net8.0\*" target="tools" />
   </files>
 </package>
